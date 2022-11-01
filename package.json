@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node server.js",
     "start": "nodemon server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "development": "mix",
+    "watch": "npx mix watch"
   },
   "author": "",
   "license": "ISC",
@@ -15,7 +17,10 @@
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "express-ejs-layouts": "^2.5.1",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.55.0",
+    "sass-loader": "^12.1.0"
   },
   "devDependencies": {
     "laravel-mix": "^6.0.49"
