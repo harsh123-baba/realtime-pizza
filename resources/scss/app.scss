@@ -3,7 +3,8 @@
 body{
     font-family: 'Lato', sans-serif;
     -webkit-font-smoothing:antialiased;
-    color: $dark;    
+    color: $dark;
+    height: 4000px;    
 }
 
 nav li:last-child a img{
@@ -24,3 +25,18 @@ section.hero{
     background: $pure;
 }
 
+.size{
+    background: $secondary;
+
+}
+
+.add-to-cart{
+    border:2px solid $primary;
+    color: $primary;
+    transition: $smooth;
+    &:hover{
+        background: $primary;
+        border-color: $pure;
+        color:$pure;
+    }
+}
