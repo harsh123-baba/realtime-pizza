@@ -21,7 +21,7 @@ nav li a:hover {
 }
 
 section.hero {
-  background: #FFF;
+  background: #F8F8F8;
 }
 
 .size {
@@ -35,6 +35,14 @@ section.hero {
 }
 .add-to-cart:hover {
   background: #FE5F1E;
-  border-color: #FFF;
-  color: #FFF;
+  border-color: rgb(246, 238, 238);
+  color: rgb(246, 238, 238);
+}
+
+.btn-primary {
+  background: #FE5F1E;
+  transition: all 0.3s ease-in-out;
+}
+.btn-primary:hover {
+  background: #b23301;
 }

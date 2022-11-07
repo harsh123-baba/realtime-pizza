@@ -9,6 +9,9 @@ app.use(express.static('public'))
 app.get("/", (req, res)=>{
     res.render('home')
 })
+app.get("/cart", (req, res)=>{
+    res.render('Customers/cart')
+})
 // set template engine
 app.use(expressLayout);
 app.set('views', __dirname + "/resources/views");

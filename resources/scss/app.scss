@@ -22,7 +22,7 @@ nav li a{
 }
 
 section.hero{
-    background: $pure;
+    background: $secondary;
 }
 
 .size{
@@ -38,5 +38,14 @@ section.hero{
         background: $primary;
         border-color: $pure;
         color:$pure;
+    }
+}
+
+.btn-primary{
+    background: $primary;
+    transition: $smooth;
+    &:hover{
+        background: $primary-hover;
+        
     }
 }
