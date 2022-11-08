@@ -49,3 +49,19 @@ section.hero{
         
     }
 }
+
+form div .btn-order {
+    background: $primary;
+    transition: $smooth;
+
+    &:hover {
+        background: $primary-hover;
+
+    }
+}
+section.cart{
+    background: $secondary;
+    .amount{
+        color: $primary;
+    }
+}

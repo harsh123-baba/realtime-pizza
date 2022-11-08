@@ -6,17 +6,18 @@ const app = express();
 
 app.use(express.static('public'))
 
-app.get("/", (req, res)=>{
-    res.render('home')
-})
-app.get("/cart", (req, res)=>{
-    res.render('Customers/cart')
-})
+
 // set template engine
 app.use(expressLayout);
 app.set('views', __dirname + "/resources/views");
 app.set('view engine', 'ejs');
 
+app.get("/", (req, res) => {
+    res.render('home')
+})
+app.get("/cart", (req, res) => {
+    res.render('Customers/cart')
+})
 
 const  PORT = process.env.PORT || 3000;
 
