@@ -2,7 +2,6 @@ body {
   font-family: "Lato", sans-serif;
   -webkit-font-smoothing: antialiased;
   color: #232323;
-  height: 4000px;
 }
 
 nav li:last-child a img {
@@ -60,4 +59,26 @@ section.cart {
 }
 section.cart .amount {
   color: #FE5F1E;
+}
+
+section.login {
+  background: #F8F8F8;
+  min-height: 90vh;
+}
+section.login a {
+  color: #FE5F1E;
+}
+section.login a:hover {
+  color: #b23301;
+}
+
+section.signup {
+  background: #F8F8F8;
+  min-height: 90vh;
+}
+section.signup a {
+  color: #FE5F1E;
+}
+section.signup a:hover {
+  color: #b23301;
 }

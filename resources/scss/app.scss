@@ -3,8 +3,7 @@
 body{
     font-family: 'Lato', sans-serif;
     -webkit-font-smoothing:antialiased;
-    color: $dark;
-    height: 4000px;    
+    color: $dark;   
 }
 
 nav li:last-child a img{
@@ -63,5 +62,29 @@ section.cart{
     background: $secondary;
     .amount{
         color: $primary;
+    }
+}
+
+section.login{
+    background: $secondary;
+    min-height: 90vh;
+    a{
+        color: $primary;
+        &:hover{
+            color:$primary-hover ;
+        }
+    }
+}
+
+section.signup {
+    background: $secondary;
+    min-height: 90vh;
+
+    a {
+        color: $primary;
+
+        &:hover {
+            color: $primary-hover ;
+        }
     }
 }

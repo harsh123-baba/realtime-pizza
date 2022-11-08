@@ -18,7 +18,12 @@ app.get("/", (req, res) => {
 app.get("/cart", (req, res) => {
     res.render('Customers/cart')
 })
-
+app.get("/login", (req, res)=>{
+    res.render('auth/login')
+})
+app.get("/signup",(req, res)=>{
+    res.render('auth/register');
+})
 const  PORT = process.env.PORT || 3000;
 
 app.listen(PORT, function(){
