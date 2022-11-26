@@ -26,7 +26,7 @@
                         <span class="font-bold text-lg">
                             ₹<%= pizza.price %>
                         </span>
-                        <button class="add-to-cart py-1 px-6 rounded-full">
+                        <button data-pizza = "<%= JSON.stringify(pizza)%>" class="add-to-cart py-1 px-6 rounded-full">
                             <span>+</span>
                             <span>Add</span>
                         </button>
