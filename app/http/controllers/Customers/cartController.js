@@ -1,7 +1,12 @@
 function cartController(){
     return {
         cart(req, res){
-            res.render('Customer/cart')
+            res.render('Customers/cart')
+        },
+        updateCart(req, res){
+            return res.json({
+                data:"All ok"
+            })
         }
     }
 }
