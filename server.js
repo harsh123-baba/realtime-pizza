@@ -8,12 +8,12 @@ const mongoose = require('mongoose');
 
 // Database connection
 
-mongoose.connect('mongodb://localhost:27017/pizza', function(error){
+mongoose.connect('mongodb://localhost:27017/Pizza', function(error){
     if(error){
         console.log("error found");
     }
     else{
-        console.log("conneted")
+        console.log("Database connected")
     }
 });
 // const MyModel = mongoose.model('Test', new Schema({ name: String }));

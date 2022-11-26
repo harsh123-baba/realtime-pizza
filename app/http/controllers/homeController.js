@@ -1,10 +1,15 @@
+const Menu = require("../../models/menu");
+
+
 function homeController(req, res){
     return{
         // index : function(){
 
         // }
-        index(req, res){
-            res.render('home');
+        async index(req, res){
+            let pizza = await Menu.find();
+            // console.log(pizza)
+            return res.render('home', {pizza:pizza})
         }
     }
 }
