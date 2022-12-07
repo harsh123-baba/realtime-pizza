@@ -43,7 +43,7 @@ app.use(session({
 app.use(flash());
 
 app.use(express.static('public'))
-
+app.use(express.json());
 
 // set template engine
 app.use(expressLayout);

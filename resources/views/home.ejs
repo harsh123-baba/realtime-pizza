@@ -26,6 +26,7 @@
                         <span class="font-bold text-lg">
                             ₹<%= pizza.price %>
                         </span>
+                        <!-- we can not bind object directly so we need to string it first then get in js and used to json it again -->
                         <button data-pizza = "<%= JSON.stringify(pizza)%>" class="add-to-cart py-1 px-6 rounded-full">
                             <span>+</span>
                             <span>Add</span>
