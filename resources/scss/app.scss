@@ -1,5 +1,6 @@
 @import  './variable';
-
+@import "~noty/src/noty.scss";
+@import "~noty/src/themes/mint.scss";
 body{
     font-family: 'Lato', sans-serif;
     -webkit-font-smoothing:antialiased;
@@ -37,6 +38,9 @@ section.hero{
         background: $primary;
         border-color: $pure;
         color:$pure;
+    }
+    &.focus{
+        outline: none;
     }
 }
 
@@ -87,4 +91,8 @@ section.signup {
             color: $primary-hover ;
         }
     }
+}
+.noty_theme__mint{
+    border-radius: 50px!important;
+    padding-left: 8px!important;
 }

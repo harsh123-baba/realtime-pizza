@@ -44,6 +44,11 @@ app.use(flash());
 
 app.use(express.static('public'))
 app.use(express.json());
+//global middleware
+app.use((req, res, next)=>{
+    res.locals.session = req.session;
+    next();
+})
 
 // set template engine
 app.use(expressLayout);
@@ -51,7 +56,6 @@ app.set('views', __dirname + "/resources/views");
 app.set('view engine', 'ejs');
 
 require("./routes/web")(app);
-
 
 const  PORT = process.env.PORT || 5000;
 
