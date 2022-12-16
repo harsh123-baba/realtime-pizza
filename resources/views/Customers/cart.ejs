@@ -5,45 +5,20 @@
             <h1 class = "font-bold ml-4 text-2xl">Order Summary</h1>
         </div>
     
-    
         <div class = "pizza-list py-8">
+            <% for (let pizza of Object.values(session.cart.items)  ) { %>
             <div class="flex items-center">
-                <img class = "w-24" src = "/img/pizza.png" alt = "">
+                <img class = "w-24" src = "/img/<%= pizza.item.image %>" alt = "">
                 <div class="flex-1 ml-4">
-                    <h1>Marina</h1>
+                    <h1><%= pizza.item.name %></h1>
                     <span>Medium</span>
                 </div>
                 <span class="flex-1">1 Pcs</span>
                 <span class="font-bold text-lg">300</span>
             </div>
+        <% } %>
         </div>
-        
-
-        <div class="pizza-list py-8">
-            <div class="flex items-center">
-                <img class="w-24" src="/img/pizza.png" alt="">
-                <div class="flex-1 ml-4">
-                    <h1>Marina</h1>
-                    <span>Medium</span>
-                </div>
-                <span class="flex-1">1 Pcs</span>
-                <span class="font-bold text-lg">300</span>
-            </div>
-        </div>
-
-
-        <div class="pizza-list py-8">
-            <div class="flex items-center">
-                <img class="w-24" src="/img/pizza.png" alt="">
-                <div class="flex-1 ml-4">
-                    <h1>Marina</h1>
-                    <span>Medium</span>
-                </div>
-                <span class="flex-1">1 Pcs</span>
-                <span class="font-bold text-lg">300</span>
-            </div>
-        </div>
-
+    
 
         <hr>
         <div class="text-right py-4">
