@@ -20,7 +20,6 @@ function cartController(){
                 cart.items[req.body._id] = {
                     item : req.body,
                     qty : 1 
-
                 }
             }
             else{

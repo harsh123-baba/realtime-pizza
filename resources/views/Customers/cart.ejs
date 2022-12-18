@@ -8,9 +8,9 @@
         <div class = "pizza-list py-8">
             <% for (let pizza of Object.values(session.cart.items)  ) { %>
             <div class="flex items-center">
-                <img class = "w-24" src = "/img/<%= pizza.item.image %>" alt = "">
+                <img class = "w-24" src = "/img/pizza.png" alt = "">
                 <div class="flex-1 ml-4">
-                    <h1><%= pizza.item.name %></h1>
+                    <h1><%= pizza.item %></h1>
                     <span>Medium</span>
                 </div>
                 <span class="flex-1">1 Pcs</span>
@@ -26,8 +26,6 @@
                 <span class="text-lg font-bold">Total Amount:</span>
                 <span class="amount text-2xl font-bold ml-2">300</span>
             </div>
-         
-
             <div>
                 <form class="mt-12" action="">
                     <input class = "border border-gray-400 p-2 w-1/2" type="text" placeholder="Phone Number">

@@ -6,7 +6,8 @@ function initRouter(app){
     
     app.get("/",homeController().index)
     app.get("/login", authController().login)
-    app.get("/signup",authController().register)
+    app.get("/register",authController().register)
+    app.post("/register", authController().postRegister)
 
     //cart
     app.get("/cart", cartController().cart)

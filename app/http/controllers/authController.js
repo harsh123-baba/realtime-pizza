@@ -1,3 +1,6 @@
+const userModel = require('../../models/userModel');
+const bcrypt = require('bcrypt');
+const User = require('../../models/userModel');
 function authController(){
     return {
         login(req, res){
@@ -5,6 +8,48 @@ function authController(){
         },
         register(req, res){
             res.render('auth/register')
+        },
+        async postRegister(req, res){
+            const { name, email, password, cnfpassword } = req.body;
+            if(password !== cnfpassword){
+                req.flash('name', name);
+                req.flash('email', email)
+                req.flash('nomatcherror', "Password and confirm password are not same");
+                return res.redirect("/register")
+            }
+            if(!name || !email || !password || !cnfpassword){
+                req.flash('name', name);
+                req.flash('email', email)
+                req.flash('error', "All Fields are required");
+                return res.redirect("/register");
+            }   
+            userModel.exists({email:email}, ((err, result)=>{
+                if(result){
+                    req.flash('existerror', 'Email Already exists');
+                    req.flash('name', name);
+                    return res.redirect('/register');
+                }
+            }))
+            
+            //hasing of password
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+
+            //create a user
+            const user = new User({
+                name : name,
+                email:email,
+                password: hashedPassword
+            })
+            user.save().then((user)  =>{
+                console.log("here")
+                return res.redirect('/login')
+            }).catch(err=>{
+
+                req.flash('errorsubmit', "Error Occured");
+                return res.redirect("/register");
+
+            })
         }
     }
 
