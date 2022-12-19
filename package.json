@@ -26,6 +26,8 @@
     "mongoose": "^6.7.3",
     "nodemon": "^2.0.20",
     "noty": "^3.2.0-beta-deprecated",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "resolve-url-loader": "5.0.0",
     "sass": "^1.56.1",
     "sass-loader": "12.1.0"

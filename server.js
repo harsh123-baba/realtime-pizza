@@ -8,11 +8,18 @@ const mongoose = require('mongoose');
 const session = require('express-session')
 const flash = require("express-flash");
 const MongoDBStore = require('connect-mongo')(session);
+const passport = require('passport');
 
+// passport 
 
+const passportInit = require('./app/config/passport')
+passportInit(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
+//end of passpost
 
 // Database connection
-
 mongoose.connect('mongodb://localhost:27017/Pizza', function(error){
     if(error){
         console.log("error found");

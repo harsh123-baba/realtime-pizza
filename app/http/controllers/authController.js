@@ -14,7 +14,7 @@ function authController(){
             if(password !== cnfpassword){
                 req.flash('name', name);
                 req.flash('email', email)
-                req.flash('nomatcherror', "Password and confirm password are not same");
+                req.flash('error', "Password and confirm password are not same");
                 return res.redirect("/register")
             }
             if(!name || !email || !password || !cnfpassword){
@@ -25,7 +25,7 @@ function authController(){
             }   
             userModel.exists({email:email}, ((err, result)=>{
                 if(result){
-                    req.flash('existerror', 'Email Already exists');
+                    req.flash('error', 'Email Already exists');
                     req.flash('name', name);
                     return res.redirect('/register');
                 }
@@ -50,6 +50,26 @@ function authController(){
                 return res.redirect("/register");
 
             })
+        },
+        async postLogin(req, res, next){
+            passport.authenticate('local', (err, user, info)=>{
+                if(err){
+                    req.flash('error', info.message)
+                    return next(err)
+                }
+                if(!user){
+                    req.flash('error', info.message);
+                    return res.redirect('/login');
+                }
+                req.logIn(user, (err)=>{
+                    if(err){
+                        req.flash('error', info.message)
+                        return next(err);
+                    }
+                    return res.redirect('/')
+                })
+            })(req, res, next)
+
         }
     }
 
