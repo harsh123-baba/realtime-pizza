@@ -37,10 +37,21 @@ app.use(session({
     secret : process.env.COOKIE_SECRET,
     resave : false,
     store: mongoStore,
-    saveUnintialized : true,
+    saveUnintialized : false,
     cookie : {maxAge : 1000*60*60*24}
 }));
 app.use(flash());
+
+app.use(express.static('public'))
+app.use(express.urlencoded({ extended : false }))
+app.use(express.json());
+//global middleware
+app.use((req, res, next)=>{
+    res.locals.session = req.session;
+    res.locals.user  = req.user;
+    next();
+})
+
 
 // passport 
 
@@ -50,15 +61,6 @@ const passportInit = require('./app/config/passport')
 passportInit(passport);
 
 //end of passpost
-
-app.use(express.static('public'))
-app.use(express.urlencoded({ extended : false }))
-app.use(express.json());
-//global middleware
-app.use((req, res, next)=>{
-    res.locals.session = req.session;
-    next();
-})
 
 // set template engine
 app.use(expressLayout);
