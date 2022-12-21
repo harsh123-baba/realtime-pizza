@@ -2,8 +2,12 @@ const LocalStretegy = require('passport-local').Strategy;
 const userModel = require('../models/userModel');
 const bcrypt = require('bcrypt')
 function init(passport){
-     //login here;
-    passport.use(new LocalStretegy({usernameFiled : 'email'}, async(email, password, done)=>{
+    //  login here;
+    // done is call back hai
+    passport.use(new LocalStretegy({
+            usernameField: 'email',    // define the parameter in req.body that passport can use as username and password
+            passwordField: 'password'
+        }, async(email, password, done)=>{
         //check if mail exist
         const user = await userModel.findOne({email:email})
         if(!user){
@@ -27,6 +31,7 @@ function init(passport){
             done(err, user);
         })
     })
+   
 }
 
 module.exports = init;

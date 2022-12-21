@@ -1,6 +1,7 @@
 const userModel = require('../../models/userModel');
 const bcrypt = require('bcrypt');
 const User = require('../../models/userModel');
+const passport = require('passport')
 function authController(){
     return {
         login(req, res){
@@ -65,7 +66,7 @@ function authController(){
                     if(err){
                         req.flash('error', info.message)
                         return next(err);
-                    }
+                    } 
                     return res.redirect('/')
                 })
             })(req, res, next)

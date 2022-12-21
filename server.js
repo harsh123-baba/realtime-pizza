@@ -10,14 +10,7 @@ const flash = require("express-flash");
 const MongoDBStore = require('connect-mongo')(session);
 const passport = require('passport');
 
-// passport 
 
-const passportInit = require('./app/config/passport')
-passportInit(passport);
-app.use(passport.initialize());
-app.use(passport.session());
-
-//end of passpost
 
 // Database connection
 mongoose.connect('mongodb://localhost:27017/Pizza', function(error){
@@ -44,10 +37,19 @@ app.use(session({
     secret : process.env.COOKIE_SECRET,
     resave : false,
     store: mongoStore,
-    saveUnintialized : false,
+    saveUnintialized : true,
     cookie : {maxAge : 1000*60*60*24}
 }));
 app.use(flash());
+
+// passport 
+
+app.use(passport.initialize());
+app.use(passport.session());
+const passportInit = require('./app/config/passport')
+passportInit(passport);
+
+//end of passpost
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended : false }))
