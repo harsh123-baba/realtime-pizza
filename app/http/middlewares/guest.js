@@ -1,7 +1,7 @@
 function guest (req, res, next){
     /// is authenticated function by passport
     if(!req.isAuthenticated()){
-        next();
+        return next();
     }
     return res.redirect("/");
 }
