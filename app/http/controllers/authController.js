@@ -8,7 +8,7 @@ function authController(){
             res.render('auth/login');
         },
         register(req, res){
-            res.render('auth/register')
+            res.render('auth/register');
         },
         async postRegister(req, res){
             const { name, email, password, cnfpassword } = req.body;
@@ -72,8 +72,12 @@ function authController(){
             })(req, res, next)
 
         },
-        async logout(req, res){
-            req.logout();
+        async logout(req, res, next){
+            req.logout(function(err){
+                if (err) {
+                    return next(err);
+                }      
+            });
             return res.redirect("/login")
         }
     }
