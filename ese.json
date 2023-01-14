@@ -1,0 +1,64 @@
+{
+    "cartId": 604638499041,
+    "userAuthToken": "6^t@CDm6DY7FZZq3E!0lT3rxb02d7&",
+    "registeredUser": true,
+    "items": [
+        {
+            "itemId": "1000000122",
+            "quantity": 2,
+            "group": [
+                "5e31a1f9fcc2b500089c10e8"
+            ],
+            "price": {
+                "sale": 0,
+                "base": 120,
+                "discount": {
+                    "price": 0
+                },
+                "currency": "USD"
+            },
+            "extra": {}
+        }
+    ]
+}
+Guest User
+
+{
+    "cartId": 604638499041,
+    "userAuthToken": null,
+    "registeredUser": false,
+    "items": [
+        {
+            "itemId": "1000000015",
+            "quantity": 5,
+            "group": [
+                "LPCUsIdKqZhjHoA1Ok3tMCsc"
+            ],
+            "price": {
+                "sale": 10,
+                "base": 50,
+                "discount": {
+                    "price": 0
+                },
+                "currency": "USD"
+            },
+            "extra": {}
+        },
+        {
+            "itemId": "1002200074",
+            "quantity": 1,
+            "group": [
+                "3NXSiwNoKbQxe5pbM9hc10lb"
+            ],
+            "price": {
+                "sale": 0,
+                "base": 450,
+                "discount": {
+                    "price": 0
+                },
+                "currency": "USD"
+            },
+            "extra": {}
+        }
+    ]
+}
