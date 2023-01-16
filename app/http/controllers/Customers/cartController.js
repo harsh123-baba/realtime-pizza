@@ -37,28 +37,33 @@ function cartController(){
                 }
                 else{
                     //update the prev cart 
-                    // console.log(user_cart)
                     console.log("lnsvcl")
-                    // let cart_item = await Cart.find();
-                    // console.log("ko",cart_item)
-                    // if(cart_item == null){
-                    //     console.log("This is new item")
-                    // }
-                    // else{
-                    //     console.log("This is not ")
-                    // }
-                    console.log(user_cart);
+                    // console.log(user_cart);
+                    let prevAvailable = false;
                     for(var i = 0;i<user_cart.items.length; i++){
                         // console.log(cart_item.items)
-                        console.log("lo",user_cart.items[i])
-                        console.log(req.body._id);
-                        console.log(user_cart.items[i].item)
+                        // console.log("lo",user_cart.items[i])
+                        // console.log(req.body._id);
+                        // console.log(user_cart.items[i].item)
                         if (user_cart.items[i].item == req.body._id){
-                            console.log("sldnvds");
+                            // console.log("sldnvds");
+                            prevAvailable = true;                            
                         }
-                        else{
-                            console.log("ajacnalnc")
-                        }
+                    }
+                    console.log(prevAvailable)
+                    if(!prevAvailable){
+                        let old_item_list = user_cart.items;
+                        let item = {item : req.body._id, itemQty : 1}
+                        // console.log("before", old_item_list)
+                        old_item_list.push(item);
+                        
+                        //now our task is to update that part
+                        let update_cart = await Cart.findOneAndUpdate({'user_id': req.user._id}, 
+                            { items: old_item_list }
+                        );
+                        console.log(update_cart);
+                        // user_cart.items.push(itemX);
+                        
                     }
                 }
             }
