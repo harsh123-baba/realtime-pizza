@@ -49,13 +49,13 @@ app.use(express.json());
 app.use((req, res, next)=>{
     res.locals.session = req.session;
     res.locals.user  = req.user;
-    // console.log(req.user)
+    // console.log(user)
+    console.log(res.locals.user)
     next();
 })
 
 
 // passport 
-
 app.use(passport.initialize());
 app.use(passport.session());
 const passportInit = require('./app/config/passport')
