@@ -11,5 +11,5 @@ const menuSchema = new Schema({
 
 const Menu = mongoose.model('Menu', menuSchema);
 
-module.exports = Menu;
+module.exports = Menu;    
 
