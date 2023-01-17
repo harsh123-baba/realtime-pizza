@@ -6,15 +6,16 @@
         </div>
     
         <div class = "pizza-list py-8">
-            <% for (let pizza of Object.values(session.cart.items)  ) { %>
+
+        <% for (let i = 0; i<items.length; i++) { %>
             <div class="flex items-center">
                 <img class = "w-24" src = "/img/pizza.png" alt = "">
-                <div class="flex-1 ml-4">
-                    <h1><%= pizza.item %></h1>
-                    <span>Medium</span>
+                <div class="flex-1 ml-4">  
+                    <h1><%= items[i].pizza_name %></h1>
+                    <span><%= items[i].pizza_size %></span>
                 </div>
-                <span class="flex-1">1 Pcs</span>
-                <span class="font-bold text-lg">300</span>
+                <span class="flex-1"><%= items[i].pizza_qty%> Pcs</span>
+                <span class="font-bold text-lg"><%= items[i].pizza_price %></span>
             </div>
         <% } %>
         </div>

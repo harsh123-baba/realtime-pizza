@@ -1,10 +1,33 @@
 let debug = true;
 const Cart = require("../../../models/cart");
 const userModel = require("../../../models/userModel");
+const Menu = require('../../../models/menu');
 function cartController(){
     return {
-        cart(req, res){
-            res.render('Customers/cart')
+        async cart(req, res){
+            let user_cart = await Cart.findOne({ 'user_id': req.user._id });
+            // we need to put check if usercart is undefinded then blank page
+            let items_cart = user_cart.items;
+            // we need to keep array of nested array
+            let items = [];
+            // items_cart.map(async (item)=>{
+            for(var i = 0; i<items_cart.length; i++){
+                let item = items_cart[i];
+                let pizza = await Menu.findOne({'_id':item.item});
+                if(pizza){
+                    let item_comp = {
+                        pizza_name : pizza.name,
+                        pizza_size : pizza.size,
+                        pizza_price : pizza.price,
+                        pizza_img : pizza.image,
+                        pizza_qty : item.itemQty
+                    }
+                    // console.log(item_comp)
+                    items.push(item_comp);
+                }
+            }
+            
+            res.render('Customers/cart', {items : items});
         },
 
         async updateCart(req, res) {
@@ -65,13 +88,13 @@ function cartController(){
                         );   
                     }
                 }
+                res.render('/Customers/cart', {user_cart : user_cart} )
             }
             else{
                 res.redirect("/login");
             }
 
         }
-        
     }
 }
 module.exports = cartController;
