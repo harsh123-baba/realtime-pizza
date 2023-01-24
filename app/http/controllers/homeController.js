@@ -3,9 +3,6 @@ const Menu = require("../../models/menu");
 
 function homeController(req, res){
     return{
-        // index : function(){
-
-        // }
         async index(req, res){
             let pizza = await Menu.find();
             // console.log(pizza)

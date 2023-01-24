@@ -63,6 +63,7 @@ function authController(){
                     return res.redirect('/login');
                 }
                 req.logIn(user, (err)=>{
+                    req.user = user
                     if(err){
                         req.flash('error', info.message)
                         return next(err);
@@ -70,7 +71,7 @@ function authController(){
                     return res.redirect('/')
                 })
             })(req, res, next)
-
+            
         },
         async logout(req, res, next){
             req.logout(function(err){

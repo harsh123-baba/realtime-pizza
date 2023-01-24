@@ -26,32 +26,32 @@ function cartController(){
                     items.push(item_comp);
                 }
             }
-            
+            // console.log("HELOO",user_cart.totalQty);
             res.render('Customers/cart', {items : items});
         },
 
         async updateCart(req, res) {
-            // console.log("helo")
-            // console.log(req.body);
-            //    console.log(req.user);
-            //    console.log(user);
             let totalQty = 0;
+            if (!req.session.cart) {
+                req.session.cart = {
+                    totalQty: 0
+                }
+                // req.session.totalQty = user_cart.totalQty
+            }
             if (req.isAuthenticated()) {
                 // console.log(req.user)
                 let user_cart = await Cart.findOne({'user_id' : req.user._id});
                 if (user_cart == null){
-                    // console.log("osnsn")
-                    // create one cart for this gareeb
-                    // const arr = [req.body._id, 1];
                     let new_cart = await new Cart({
                         items : [{
                             item : req.body._id,
                             itemQty : 1
                         }],
+                        totalQty : 1,
                         user_id : req.user._id
                     })
-                    totalQty = 1;
-                    // console.log(new_cart);
+                    req.session.cart.totalQty = 1;
+                    
                     new_cart.save().then((cart)=>{
                     // console.log("Added");
                     }).catch(err=>{
@@ -60,9 +60,6 @@ function cartController(){
                     })
                 }
                 else{
-                    //update the prev cart 
-                    // console.log("lnsvcl")
-                    // console.log(user_cart);
                     let prevAvailable = false;
                     for(var i = 0;i<user_cart.items.length; i++){
                         if (user_cart.items[i].item == req.body._id){
@@ -70,27 +67,29 @@ function cartController(){
                             let old_item_list = user_cart.items;
                             let item = user_cart.items;
                             item[i].itemQty += 1;
+                            totalQty += 1;
                             let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
-                                { items: item }
+                                { items: item, totalQty: user_cart.totalQty + 1 }
                             );
-                            console.log(item[i].itemQty)
+                            req.session.cart.totalQty = user_cart.totalQty + 1;
                             prevAvailable = true;                            
                         }
 
                     }
                     if(!prevAvailable){
                         let old_item_list = user_cart.items;
-                        let item = {item : req.body._id, itemQty : 1}
-                        // console.log("before", old_item_list)
+                        let item = {item : req.body._id}
                         old_item_list.push(item);
-                        
                         //now our task is to update that part
                         let update_cart = await Cart.findOneAndUpdate({'user_id': req.user._id}, 
-                            { items: old_item_list }
+                            { items: old_item_list, totalQty: user_cart.totalQty+1 }
                         );   
+                        req.session.cart.totalQty = user_cart.totalQty+1;
+
                     }
                 }
-                return res.json({})
+                
+                return res.json({totalQty:req.session.cart.totalQty})
                 return res.render('/Customers/cart', {user_cart : user_cart} )
             }
             else{

@@ -45,14 +45,6 @@ app.use(flash());
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended : false }))
 app.use(express.json());
-//global middleware
-app.use((req, res, next)=>{
-    res.locals.session = req.session;
-    res.locals.user  = req.user;
-    // console.log(user)
-    console.log(res.locals.user)
-    next();
-})
 
 
 // passport 
@@ -63,12 +55,20 @@ passportInit(passport);
 
 //end of passpost
 
+//global middleware
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    res.locals.user = req.user;
+    // console.log(req.user)
+    next();
+})
 // set template engine
 app.use(expressLayout);
 app.set('views', __dirname + "/resources/views");
 app.set('view engine', 'ejs');
 
 require("./routes/web")(app);
+
 
 const  PORT = process.env.PORT || 5000;
 
