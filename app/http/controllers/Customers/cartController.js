@@ -16,6 +16,7 @@ function cartController(){
                 let pizza = await Menu.findOne({'_id':item.item});
                 if(pizza){
                     let item_comp = {
+                        pizza_id : pizza.id,
                         pizza_name : pizza.name,
                         pizza_size : pizza.size,
                         pizza_price : pizza.price,
@@ -31,6 +32,7 @@ function cartController(){
         },
 
         async updateCart(req, res) {
+            console.log("uodatjdnc")
             let totalQty = 0;
             if (!req.session.cart) {
                 req.session.cart = {
@@ -50,7 +52,7 @@ function cartController(){
                         totalQty : 1,
                         user_id : req.user._id
                     })
-                    req.session.cart.totalQty = 1;
+                    // req.session.cart.totalQty = 1;
                     
                     new_cart.save().then((cart)=>{
                     // console.log("Added");
@@ -71,10 +73,9 @@ function cartController(){
                             let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
                                 { items: item, totalQty: user_cart.totalQty + 1 }
                             );
-                            req.session.cart.totalQty = user_cart.totalQty + 1;
+                            // req.session.cart.totalQty = user_cart.totalQty + 1;
                             prevAvailable = true;                            
                         }
-
                     }
                     if(!prevAvailable){
                         let old_item_list = user_cart.items;
@@ -87,8 +88,7 @@ function cartController(){
                         req.session.cart.totalQty = user_cart.totalQty+1;
 
                     }
-                }
-                
+                }  
                 return res.json({totalQty:req.session.cart.totalQty})
                 return res.render('/Customers/cart', {user_cart : user_cart} )
             }
@@ -96,8 +96,38 @@ function cartController(){
                 return res.redirect("/login");
             }
 
-        }
+        },
 
+        async updateCartKeys(req, res){
+            console.log('snvkl', req.body)
+            const user_cart = await Cart.findOne({'user_id': req.user._id});
+            // console.log(user_cart)
+            if(req.body.action === "add"){
+                // console.log("called add");
+                // usercart is now my cart 
+                // i need to perform add the qty operation on it
+                
+                for(var i = 0; i<user_cart.items.length; i++){
+                    if(user_cart.items[i].item == req.body.pizza_id){
+                        let user_item = user_cart.items;
+                        user_item[i].itemQty += 1;
+                        let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
+                            { items: user_item, totalQty: user_cart.totalQty + 1 }
+                        );
+                        // req.session.cart.totalQty = user_cart.totalQty + 1;
+                    }
+                }
+
+            }
+            else{
+
+                console.log("reduce called");
+            }
+            
+            // return res.redirect("/cart")
+            // return res.json({ totalQty: req.session.cart.totalQty }).render('/Customers/cart', { user_cart: user_cart })
+
+        }
 
         // updateCart(req, res){
         // //for the first time when user have nothing in cart

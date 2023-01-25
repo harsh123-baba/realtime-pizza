@@ -14,7 +14,16 @@
                     <h1><%= items[i].pizza_name %></h1>
                     <span><%= items[i].pizza_size %></span>
                 </div>
-                <span class="flex-1"><%= items[i].pizza_qty%> Pcs</span>
+                <div class="flex-1">
+                    <button data-pizza = "<%= JSON.stringify(items[i].pizza_id) %>" class="add-to-cart-keys">
+                        <img class = "chng-arrow"src = "/img/add.png">
+                    </button>
+                    
+                    <span class="flex-1"><%= items[i].pizza_qty%> Pcs</span>
+                    <button data-pizzaId = "<%= JSON.stringify(items[i].pizza_id) %>" class="reduce-to-cart-keys">
+                        <img class = "chng-arrow"src = "/img/minus.png">
+                    </button>
+                </div>
                 <span class="font-bold text-lg"><%= items[i].pizza_price %></span>
             </div>
         <% } %>

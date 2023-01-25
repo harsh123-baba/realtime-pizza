@@ -96,3 +96,16 @@ section.signup {
     border-radius: 50px!important;
     padding-left: 8px!important;
 }
+.quantity{
+    display: inline-block;
+    font-weight: 700;
+    padding-right: 10px;
+}
+
+.chng-arrow {
+    width: 17px;
+    cursor: pointer;
+    display: block;
+    margin-top: 5px;
+    transition: .1s;
+}

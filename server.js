@@ -9,7 +9,7 @@ const session = require('express-session')
 const flash = require("express-flash");
 const MongoDBStore = require('connect-mongo')(session);
 const passport = require('passport');
-
+const Cart = require("./app/models/cart")
 
 
 // Database connection
@@ -55,18 +55,22 @@ passportInit(passport);
 
 //end of passpost
 
-//global middleware
-app.use((req, res, next) => {
-    res.locals.session = req.session;
-    res.locals.user = req.user;
-    // console.log(req.user)
-    next();
-})
 // set template engine
 app.use(expressLayout);
 app.set('views', __dirname + "/resources/views");
 app.set('view engine', 'ejs');
 
+//global middleware
+app.use(async (req, res, next) => {
+    res.locals.user = req.user;
+    if(req.user){
+        let user_cart = await Cart.findOne({'user_id':req.user._id});
+        res.locals.totalQty = user_cart.totalQty;
+        console.log(user_cart.totalQty)
+    }
+    // console.log(req.user)
+    next();
+})
 require("./routes/web")(app);
 
 
