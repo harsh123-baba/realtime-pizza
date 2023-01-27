@@ -38,11 +38,13 @@ const totalCartValue = document.querySelector("#totalCartValue");
 function updateCartKeys(pizza_id, action, itemno){
     let changedItem = "changed_value_" + itemno
     let changed_value = document.getElementById(changedItem)
+    let totalCartValue = document.querySelector("#totalCartValue");
 
     axios.post('/update-cart-keys', {pizza_id, action})
     .then(res=>{
         changed_value.innerText = res.data.changed_value + " Pcs";
-        cartCounter.innerHTML = res.data.totalQty     
+        cartCounter.innerText = res.data.totalQty     
+        totalCartValue.innerText = res.data.current_price;
         if(action==='add'){
             new Noty({
                 type: 'success',

@@ -1,4 +1,5 @@
 <section class = "cart">
+    <% if(items.length !== 0) { %>
     <div class="order container mx-auto w-1/2">
         <div class = "flex items-center items-center border-b border-gray-300 pb-4">
             <img src = "/img/cart-black.png" alt = "">
@@ -23,7 +24,7 @@
                         <img class = "chng-arrow"src = "/img/minus.png">
                     </button>
                 </div>
-                <span class="font-bold text-lg"><%= items[i].pizza_qty*items[i].pizza_price %></span>
+                <span class="font-bold text-lg" id = "totalCartValue"><%= items[i].pizza_qty*items[i].pizza_price %></span>
             </div>
         <% } %>
         </div>
@@ -50,7 +51,8 @@
             class="inline-block cursor-poiner btn-primary px-6 py-2 rounded-full text-white font-bold mt-6">Login To Continue</a>
         </div>
     </div>
-    <!-- <div class="empty-cart py-16">
+    <% } else {%>
+    <div class="empty-cart py-16">
         <div class="container mx-auto text-center">
             <h1 class="text-3xl font-bold mb-2">Cart Empty 😶</h1>
             <p class="text-gray-500 text-lg mb-12">You Probably haven't ordered a pizza yet.<br>
@@ -64,5 +66,6 @@
         </div>
     
     
-    </div> -->
+    </div>
+    <% } %>
 </section>
