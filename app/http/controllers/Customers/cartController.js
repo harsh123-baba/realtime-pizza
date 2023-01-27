@@ -11,6 +11,7 @@ function cartController(){
             // we need to keep array of nested array
             let items = [];
             // items_cart.map(async (item)=>{
+            let totalCartValue = 0;
             for(var i = 0; i<items_cart.length; i++){
                 let item = items_cart[i];
                 let pizza = await Menu.findOne({'_id':item.item});
@@ -23,12 +24,12 @@ function cartController(){
                         pizza_img : pizza.image,
                         pizza_qty : item.itemQty
                     }
-                    // console.log(item_comp)
+                    totalCartValue += (pizza.price * item.itemQty)
                     items.push(item_comp);
                 }
             }
             // console.log("HELOO",user_cart.totalQty);
-            res.render('Customers/cart', {items : items});
+            res.render('Customers/cart', {items : items, totalCartValue:totalCartValue});
         },
 
         async updateCart(req, res) {
@@ -89,43 +90,60 @@ function cartController(){
 
                     }
                 }  
-                return res.json({totalQty:req.session.cart.totalQty})
-                return res.render('/Customers/cart', {user_cart : user_cart} )
+                // console.log("brijs", req.sessiontotalQty)
+                if(user_cart){
+
+                    return res.json({ totalQty: user_cart.totalQty})
+                }
+                else{
+                    totalQty : 0
+                }
+                // return res.render('/Customers/cart', {user_cart : user_cart} )
             }
             else{
                 return res.redirect("/login");
             }
-
         },
 
         async updateCartKeys(req, res){
-            console.log('snvkl', req.body)
             const user_cart = await Cart.findOne({'user_id': req.user._id});
-            // console.log(user_cart)
-            if(req.body.action === "add"){
-                // console.log("called add");
-                // usercart is now my cart 
-                // i need to perform add the qty operation on it
-                
-                for(var i = 0; i<user_cart.items.length; i++){
-                    if(user_cart.items[i].item == req.body.pizza_id){
-                        let user_item = user_cart.items;
+            let changed_value = null;
+            let current_price = 0;
+            let totalQty = user_cart.totalQty;
+            for(var i = 0; i<user_cart.items.length; i++){
+                current_price += user_cart.items[i].item.price
+                if(user_cart.items[i].item == req.body.pizza_id){
+                    
+                    // only this is the code for add the prodcut ;
+                    let user_item = user_cart.items;
+                    changed_value = user_item[i].itemQty;
+                    if(req.body.action === "add"){
                         user_item[i].itemQty += 1;
-                        let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
-                            { items: user_item, totalQty: user_cart.totalQty + 1 }
-                        );
-                        // req.session.cart.totalQty = user_cart.totalQty + 1;
+                        changed_value = user_item[i].itemQty;
+                        totalQty += 1;                           
                     }
+                    else{
+                        if(user_item[i].itemQty > 1){
+                            user_item[i].itemQty -= 1;
+                            changed_value = user_item[i].itemQty;
+                            totalQty -= 1;
+                        }
+                        else if(user_item[i].itemQty <= 1){
+                            user_item[i].itemQty -= 1;
+                            changed_value = user_item[i].itemQty;
+                            user_item.splice(i, 1);
+                            totalQty -= 1;
+                        }
+                    }
+                    let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
+                        { items: user_item, totalQty: totalQty }
+                    );
+                    
+                
                 }
-
             }
-            else{
-
-                console.log("reduce called");
-            }
-            
             // return res.redirect("/cart")
-            // return res.json({ totalQty: req.session.cart.totalQty }).render('/Customers/cart', { user_cart: user_cart })
+            return res.json({ user_cart:user_cart,totalQty: totalQty, changed_value:changed_value })
 
         }
 

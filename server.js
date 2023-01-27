@@ -63,10 +63,19 @@ app.set('view engine', 'ejs');
 //global middleware
 app.use(async (req, res, next) => {
     res.locals.user = req.user;
+    // console.log(req.user)
     if(req.user){
-        let user_cart = await Cart.findOne({'user_id':req.user._id});
-        res.locals.totalQty = user_cart.totalQty;
-        console.log(user_cart.totalQty)
+        let user_cart = await Cart.findOne({"user_id":req.user._id});
+        // console.log(user_cart)
+        if(user_cart){
+    
+            // let user_cart = await Cart.findOne({'user_id':req.user._id});
+            res.locals.totalQty = user_cart.totalQty;
+            // console.log(res.locals.totalQty)
+        }
+        else{
+            res.locals.totalQty=0
+        }
     }
     // console.log(req.user)
     next();

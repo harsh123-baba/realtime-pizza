@@ -15,10 +15,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var addtoCart = document.querySelectorAll(".add-to-cart");
-// let cartCounter = document.querySelector("#cartCounter");
-
+var cartCounter = document.querySelector("#cartCounter");
 function updateCart(pizza) {
   axios__WEBPACK_IMPORTED_MODULE_1__["default"].post("/update-cart", pizza).then(function (res) {
+    console.log("oops", res.data.totalQty);
+    cartCounter.innerText = res.data.totalQty;
     new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
       type: 'success',
       timeout: 1000,
@@ -35,53 +36,50 @@ function updateCart(pizza) {
 }
 addtoCart.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
-    // console.log("ovnsjdnc")
-    console.log("jksv", e);
     var pizza = JSON.parse(btn.dataset.pizza);
     updateCart(pizza);
   });
 });
 var addKey = document.querySelectorAll(".add-to-cart-keys");
 var reduceKey = document.querySelectorAll(".reduce-to-cart-keys");
-function updateCartKeys(pizza_id, action) {
-  // console.log(pizza, action)`
+var totalCartValue = document.querySelector("#totalCartValue");
+function updateCartKeys(pizza_id, action, itemno) {
+  var changedItem = "changed_value_" + itemno;
+  var changed_value = document.getElementById(changedItem);
   axios__WEBPACK_IMPORTED_MODULE_1__["default"].post('/update-cart-keys', {
     pizza_id: pizza_id,
     action: action
+  }).then(function (res) {
+    changed_value.innerText = res.data.changed_value + " Pcs";
+    cartCounter.innerHTML = res.data.totalQty;
+    if (action === 'add') {
+      new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
+        type: 'success',
+        timeout: 1000,
+        text: "Item Added"
+      }).show();
+    } else {
+      new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
+        type: 'error',
+        timeout: 1000,
+        text: "Item Removed",
+        progressBar: false
+      }).show();
+    }
   });
-  // .then(res=>{
-  //     console.log("res", res);
-  //     console.log("Clicked", action)
-  //     if(action==='add'){
-  //         new Noty({
-  //             type: 'success',
-  //             timeout: 1000,
-  //             text: "Item Added"
-  //         }).show();
-  //     }
-  //     else{
-  //         new Noty({
-  //             type: 'error',
-  //             timeout: 1000,
-  //             text: "Item Removed",
-  //             progressBar: false
-  //         }).show();
-  //     }   
-  // })
-  console.log('klsnfkldfsklnflk');
 }
 addKey.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
-    // console.log("Asknkld")
     var pizza = JSON.parse(btn.dataset.pizza);
-    updateCartKeys(pizza, "add");
+    updateCartKeys(pizza, "add", btn.dataset.itemno);
   });
 });
 reduceKey.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
-    // console.log("clickce");
-    var pizza_id = JSON.parse(btn.dataset.pizza);
-    updateCartKeys(pizza_id, "reduce");
+    console.log(btn.dataset);
+    var pizza = JSON.parse(btn.dataset.pizza);
+    console.log(pizza);
+    updateCartKeys(pizza, "reduce", btn.dataset.itemno);
   });
 });
 

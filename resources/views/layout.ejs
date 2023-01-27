@@ -34,10 +34,11 @@
                 <% } else { %>
                     <li class="ml-6">
                         <form id="logout" action="/logout" method="POST">
-                            <a onclick="document.getElementById('logout').submit()" href="#">logout</a>
+                            <a onclick="document.getElementById('logout').submit()" href="#">Logout</a>
                         </form>
                     </li>
                     <li class="ml-6"><a  class="flex items-center inline-block px-4 py-2 rounded-full" href="/cart">
+                        
                         <span id="cartCounter" class="text font-bold pr-2"><%= totalQty ? totalQty : ""%></span>
                         <img src="/imgs/cart.png">
                         </a>
