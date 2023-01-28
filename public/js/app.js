@@ -45,15 +45,18 @@ var reduceKey = document.querySelectorAll(".reduce-to-cart-keys");
 var totalCartValue = document.querySelector("#totalCartValue");
 function updateCartKeys(pizza_id, action, itemno) {
   var changedItem = "changed_value_" + itemno;
+  var changedPrice = "changed_price_" + itemno;
   var changed_value = document.getElementById(changedItem);
   var totalCartValue = document.querySelector("#totalCartValue");
+  var changed_price = document.getElementById(changedPrice);
   axios__WEBPACK_IMPORTED_MODULE_1__["default"].post('/update-cart-keys', {
     pizza_id: pizza_id,
     action: action
   }).then(function (res) {
     changed_value.innerText = res.data.changed_value + " Pcs";
     cartCounter.innerText = res.data.totalQty;
-    // totalCartValue.innerText = res.data.current_price;
+    totalCartValue.innerText = res.data.current_price;
+    changed_price.innerText = res.data.changed_price;
     if (action === 'add') {
       new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
         type: 'success',

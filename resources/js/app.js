@@ -37,14 +37,17 @@ const reduceKey = document.querySelectorAll(".reduce-to-cart-keys");
 const totalCartValue = document.querySelector("#totalCartValue");
 function updateCartKeys(pizza_id, action, itemno){
     let changedItem = "changed_value_" + itemno
+    let changedPrice = "changed_price_"+ itemno;
     let changed_value = document.getElementById(changedItem)
     let totalCartValue = document.querySelector("#totalCartValue");
+    let changed_price = document.getElementById(changedPrice);
 
     axios.post('/update-cart-keys', {pizza_id, action})
     .then(res=>{
         changed_value.innerText = res.data.changed_value + " Pcs";
         cartCounter.innerText = res.data.totalQty     
-        // totalCartValue.innerText = res.data.current_price;
+        totalCartValue.innerText = res.data.current_price;
+        changed_price.innerText = res.data.changed_price;
         if(action==='add'){
             new Noty({
                 type: 'success',

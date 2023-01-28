@@ -1,6 +1,5 @@
 let debug = true;
 const Cart = require("../../../models/cart");
-const userModel = require("../../../models/userModel");
 const Menu = require('../../../models/menu');
 function cartController(){
     return {
@@ -35,7 +34,7 @@ function cartController(){
         },
 
         async updateCart(req, res) {
-            console.log("uodatjdnc")
+            // console.log("uodatjdnc")
             let totalQty = 0;
             if (!req.session.cart) {
                 req.session.cart = {
@@ -108,30 +107,27 @@ function cartController(){
         },
 
         async updateCartKeys(req, res){
-            const user_cart = await Cart.findOne({'user_id': req.user._id});
-            // const menu_cart = await Menu.findOne({'user_id':user_cart._id});
-            // console.log(menu_cart);
-            // await Cart.findOne({'user_id':user_cart._id}).populate('menus').exec((err, cartItems)=>{
-            //     console.log(cartItems)
-            // })
-            // console.log(price_cart);
+            const user_cart = await Cart.findOne({ 'user_id': req.user._id }).populate('items.item')
             let changed_value = null;
+            let changed_price = null;
             let current_price = 0;
             let totalQty = user_cart.totalQty;
             for(var i = 0; i<user_cart.items.length; i++){
-                // current_price += user_cart.items[i].price
-                // console.log(current_price)
-                if(user_cart.items[i].item == req.body.pizza_id){
+                // console.log(user_cart.items[i].item.itemQty);
+                current_price += (user_cart.items[i].item.price * user_cart.items[i].itemQty)
+                if(user_cart.items[i].item.id == req.body.pizza_id){
                     
                     // only this is the code for add the prodcut ;
                     let user_item = user_cart.items;
                     changed_value = user_item[i].itemQty;
+                    changed_price = user_item[i].item.price * user_item[i].itemQty;
                     if(req.body.action === "add"){
                         user_item[i].itemQty += 1;
                         changed_value = user_item[i].itemQty;
                         totalQty += 1;      
-                        current_price += user_item[i].price                     
-                        console.log(current_price)               
+                        current_price += user_cart.items[i].item.price
+                        changed_price += user_cart.items[i].item.price;
+                        // console.log("add",changed_price)               
 
                     }
                     else{
@@ -139,11 +135,13 @@ function cartController(){
                             user_item[i].itemQty -= 1;
                             changed_value = user_item[i].itemQty;
                             totalQty -= 1;
-                            current_price -= user_item[i].price                     
+                            current_price -= user_cart.items[i].item.price;
+                            changed_price -= user_cart.items[i].item.price;  
+                            // console.log("minus",changed_price);
                         }
                         else if(user_item[i].itemQty === 1){
-                            current_price -= user_item[i].price      
-                            console.log(current_price)               
+                            current_price -= user_cart.items[i].item.price
+                            changed_price -= user_cart.items[i].item.price;                  
                             user_item[i].itemQty -= 1;
                             changed_value = user_item[i].itemQty;
                             user_item.splice(i, 1);
@@ -152,9 +150,16 @@ function cartController(){
                         else{
                             changed_value = user_item[i].itemQty;
                             console.log("nothing here to delete")
-                            return res.json({ user_cart: user_cart, totalQty: totalQty, changed_value: changed_value, current_price: current_price })
+                            // return res.json({ user_cart: user_cart, 
+                            //     totalQty: totalQty, 
+                            //     changed_value: changed_value, 
+                            //     current_price: current_price, 
+                            //     changed_price:changed_price 
+                            // })
                         }
                     }
+                    // console.log("hello",changed_price);
+                    
                     let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
                         { items: user_item, totalQty: totalQty }
                     );
@@ -163,7 +168,12 @@ function cartController(){
                 }
             }
             // return res.redirect("/cart")
-            return res.json({ user_cart:user_cart,totalQty: totalQty, changed_value:changed_value, current_price:current_price })
+            return res.json({ user_cart:user_cart,
+                totalQty: totalQty, 
+                changed_value:changed_value, 
+                current_price:current_price, 
+                changed_price:changed_price 
+            })
 
         }
 
