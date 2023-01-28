@@ -5,27 +5,29 @@ const Menu = require('../../../models/menu');
 function cartController(){
     return {
         async cart(req, res){
+            
             let user_cart = await Cart.findOne({ 'user_id': req.user._id });
             // we need to put check if usercart is undefinded then blank page
-            let items_cart = user_cart.items;
-            // we need to keep array of nested array
             let items = [];
-            // items_cart.map(async (item)=>{
             let totalCartValue = 0;
-            for(var i = 0; i<items_cart.length; i++){
-                let item = items_cart[i];
-                let pizza = await Menu.findOne({'_id':item.item});
-                if(pizza){
-                    let item_comp = {
-                        pizza_id : pizza.id,
-                        pizza_name : pizza.name,
-                        pizza_size : pizza.size,
-                        pizza_price : pizza.price,
-                        pizza_img : pizza.image,
-                        pizza_qty : item.itemQty
+            if(user_cart){
+                let items_cart = user_cart.items;
+                // we need to keep array of nested array
+                for(var i = 0; i<items_cart.length; i++){
+                    let item = items_cart[i];
+                    let pizza = await Menu.findOne({'_id':item.item});
+                    if(pizza){
+                        let item_comp = {
+                            pizza_id : pizza.id,
+                            pizza_name : pizza.name,
+                            pizza_size : pizza.size,
+                            pizza_price : pizza.price,
+                            pizza_img : pizza.image,
+                            pizza_qty : item.itemQty
+                        }
+                        totalCartValue += (pizza.price * item.itemQty)
+                        items.push(item_comp);
                     }
-                    totalCartValue += (pizza.price * item.itemQty)
-                    items.push(item_comp);
                 }
             }
             // console.log("HELOO",user_cart.totalQty);
@@ -117,9 +119,8 @@ function cartController(){
             let current_price = 0;
             let totalQty = user_cart.totalQty;
             for(var i = 0; i<user_cart.items.length; i++){
-                // console.log(user_cart.items[i])
-                current_price += user_cart.items[i].price
-                console.log(current_price)
+                // current_price += user_cart.items[i].price
+                // console.log(current_price)
                 if(user_cart.items[i].item == req.body.pizza_id){
                     
                     // only this is the code for add the prodcut ;
@@ -151,6 +152,7 @@ function cartController(){
                         else{
                             changed_value = user_item[i].itemQty;
                             console.log("nothing here to delete")
+                            return res.json({ user_cart: user_cart, totalQty: totalQty, changed_value: changed_value, current_price: current_price })
                         }
                     }
                     let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },

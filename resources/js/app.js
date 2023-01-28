@@ -44,7 +44,7 @@ function updateCartKeys(pizza_id, action, itemno){
     .then(res=>{
         changed_value.innerText = res.data.changed_value + " Pcs";
         cartCounter.innerText = res.data.totalQty     
-        totalCartValue.innerText = res.data.current_price;
+        // totalCartValue.innerText = res.data.current_price;
         if(action==='add'){
             new Noty({
                 type: 'success',

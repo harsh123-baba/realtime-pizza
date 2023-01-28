@@ -46,12 +46,14 @@ var totalCartValue = document.querySelector("#totalCartValue");
 function updateCartKeys(pizza_id, action, itemno) {
   var changedItem = "changed_value_" + itemno;
   var changed_value = document.getElementById(changedItem);
+  var totalCartValue = document.querySelector("#totalCartValue");
   axios__WEBPACK_IMPORTED_MODULE_1__["default"].post('/update-cart-keys', {
     pizza_id: pizza_id,
     action: action
   }).then(function (res) {
     changed_value.innerText = res.data.changed_value + " Pcs";
-    cartCounter.innerHTML = res.data.totalQty;
+    cartCounter.innerText = res.data.totalQty;
+    // totalCartValue.innerText = res.data.current_price;
     if (action === 'add') {
       new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
         type: 'success',
@@ -76,9 +78,9 @@ addKey.forEach(function (btn) {
 });
 reduceKey.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
-    console.log(btn.dataset);
+    // console.log(btn.dataset)
     var pizza = JSON.parse(btn.dataset.pizza);
-    console.log(pizza);
+    // console.log(pizza)
     updateCartKeys(pizza, "reduce", btn.dataset.itemno);
   });
 });
