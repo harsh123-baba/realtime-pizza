@@ -82,3 +82,11 @@ reduceKey.forEach((btn)=>{
         updateCartKeys(pizza, "reduce",btn.dataset.itemno);
     })
 })
+
+// alert message js to remove after few seconds
+let alrtmsg = document.querySelector('#success-alert');
+if(alrtmsg){
+    setTimeout(()=>{
+        alrtmsg.remove();
+    }, 5000)
+}

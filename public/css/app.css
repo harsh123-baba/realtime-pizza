@@ -345,3 +345,7 @@ section.signup a:hover {
   margin-top: 5px;
   transition: 0.1s;
 }
+
+a.link {
+  color: #FE5F1E;
+}

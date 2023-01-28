@@ -88,6 +88,14 @@ reduceKey.forEach(function (btn) {
   });
 });
 
+// alert message js to remove after few seconds
+var alrtmsg = document.querySelector('#success-alert');
+if (alrtmsg) {
+  setTimeout(function () {
+    alrtmsg.remove();
+  }, 5000);
+}
+
 /***/ }),
 
 /***/ "./node_modules/base64-js/index.js":
