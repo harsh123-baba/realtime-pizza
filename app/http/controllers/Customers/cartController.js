@@ -108,6 +108,7 @@ function cartController(){
 
         async updateCartKeys(req, res){
             const user_cart = await Cart.findOne({ 'user_id': req.user._id }).populate('items.item')
+            console.log(user_cart);
             let changed_value = null;
             let changed_price = null;
             let current_price = 0;
