@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const oderSchema = new Schema ({
     customer_id : {
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'UserModel',
         required:true
     },
     items:{type:Object, required:true},
