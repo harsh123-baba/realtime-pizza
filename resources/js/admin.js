@@ -23,13 +23,12 @@ export function initAdmin() {
         let parsedItems = Object.values(items)
         return parsedItems.map((menuItem) => {
             return `
-                <p>${menuItem.item.name} - ${menuItem.qty} pcs </p>
+                <p>${menuItem.item.name} - ${menuItem.itemQty} pcs </p>
             `
         }).join('')
     }
 
     function generateMarkup(orders) {
-        console.log(orders[0].items);
         return orders.map(order => {
             return `
                 <tr>

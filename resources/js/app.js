@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Noty from 'noty';
 import { initAdmin } from './admin';
+
 let addtoCart = document.querySelectorAll(".add-to-cart")
 let cartCounter = document.querySelector("#cartCounter");
 function updateCart(pizza){

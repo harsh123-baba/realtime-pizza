@@ -54,7 +54,7 @@ function cartController(){
                         totalQty : 1,
                         user_id : req.user._id
                     })
-                    // req.session.cart.totalQty = 1;
+                    req.session.cart.totalQty = 1;
                     
                     new_cart.save().then((cart)=>{
                     // console.log("Added");

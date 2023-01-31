@@ -16,6 +16,7 @@
                     <span><%= items[i].pizza_size %></span>
                 </div>
                 <div class="flex-1">
+                    <form action = "/update-cart-keys"></form>
                     <button data-pizza = "<%= JSON.stringify(items[i].pizza_id) %>" data-itemNo="<%= JSON.stringify(i) %>" class="add-to-cart-keys">
                         <img class = "chng-arrow"src = "/img/add.png">
                     </button>

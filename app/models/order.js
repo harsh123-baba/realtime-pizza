@@ -8,7 +8,17 @@ const oderSchema = new Schema ({
         ref:'UserModel',
         required:true
     },
-    items:{type:Object, required:true},
+    items:[
+        {
+            item:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"Menu"
+            },
+            itemQty : {
+                type : Number, required:true
+            }
+        }
+    ],
     phone : {type:Number, reuqired:true},
     address : {type : String, required:true},
     payment_method : {type:String, default:"COD"},
