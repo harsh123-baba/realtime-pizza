@@ -3,11 +3,16 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/userModel');
 const passport = require('passport')
 function authController(){
+    function _getRedirectUrl(req){
+        return req.user.role === "admin"? '/Admin/orders' : '/';
+    }
+
     return {
         login(req, res){
             res.render('auth/login');
         },
         register(req, res){
+            userModel.find();
             res.render('auth/register');
         },
         async postRegister(req, res){
@@ -32,6 +37,7 @@ function authController(){
                 }
             }))
             
+            userModel.find();
             //hasing of password
             const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -43,7 +49,8 @@ function authController(){
                 password: hashedPassword
             })
             user.save().then((user)  =>{
-                console.log("here")
+                // console.log("here")
+                // console.log(user);
                 return res.redirect('/login')
             }).catch(err=>{
 
@@ -68,7 +75,7 @@ function authController(){
                         req.flash('error', info.message)
                         return next(err);
                     } 
-                    return res.redirect('/')
+                    return res.redirect(_getRedirectUrl(req));
                 })
             })(req, res, next)
             

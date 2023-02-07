@@ -8,7 +8,7 @@ function orderContoller (){
             if (req.xhr) {
                 return res.json(order)
             } else {
-                return res.render('admin/orders')
+                return res.render('Admin/orders')
             }
         }
     }

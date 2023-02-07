@@ -11,6 +11,7 @@ const adminOrderContoller = require('../app/http/controllers/Admin/orderControll
 //middlewares
 const guestMiddleware = require("../app/http/middlewares/guest")
 const authMiddleware = require("../app/http/middlewares/auth");
+const adminMiddleware = require('../app/http/middlewares/admin');
 
 function initRouter(app){
     
@@ -23,7 +24,7 @@ function initRouter(app){
     //cart
     app.get("/cart", cartController().cart)
     app.post("/update-cart", cartController().updateCart)
-    app.post("/update-cart-keys",cartController().updateCartKeys)
+    app.post("/update-cart-keys", adminMiddleware,cartController().updateCartKeys)
 
     // Cutomer Routes
     //Order
