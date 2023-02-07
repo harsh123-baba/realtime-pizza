@@ -48,8 +48,20 @@ function orderController(){
             {sort:{'createdAt':-1}}).populate('items.item');
             // console.log(orders);
             // console.log("bro:",orders[0].items[0])
+            res.header('Cache-Control', 'no-cache, private, no-store,must-revalidate,max-state=0, post-check=0, pre-check=0');
+
             res.render("Customers/orders", {orders:orders, moment:moment});
             
+        },
+        async show(req, res){
+            const order = await Order.findById(req.params.id);
+            //user is autherized
+            if(req.user._id.toString() === order.customer_id.toString()){
+                res.render('Customers/singleOrder', {order});   
+            }
+            else{
+                res.redirect("/");
+            }
         }
     }
 }

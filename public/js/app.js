@@ -160,6 +160,30 @@ if (alrtmsg) {
 }
 (0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)();
 
+//update status
+var statuses = document.querySelectorAll(".status_line");
+var hiddenInput = document.querySelector("#hiddenOrderInput");
+var order = hiddenInput ? hiddenInput.value : null;
+// console.log(order);
+order = JSON.parse(order);
+console.log(order);
+function updateStatus(order) {
+  var stepCompleted = false;
+  statuses.forEach(function (status) {
+    var dataProp = status.dataset.status;
+    if (stepCompleted) {
+      status.classList.add('step-completed');
+    }
+    if (dataProp === order.status) {
+      if (status.nextElementSibling) {
+        status.nextElementSibling.classList.add('current');
+      }
+    }
+  });
+}
+;
+updateStatus(order);
+
 /***/ }),
 
 /***/ "./node_modules/base64-js/index.js":

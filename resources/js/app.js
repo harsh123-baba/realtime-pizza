@@ -94,3 +94,29 @@ if(alrtmsg){
 }
 
 initAdmin();
+
+//update status
+let statuses = document.querySelectorAll(".status_line")
+let hiddenInput = document.querySelector("#hiddenOrderInput")
+let order = hiddenInput ? hiddenInput.value : null;
+// console.log(order);
+order = JSON.parse(order);
+console.log(order);
+function updateStatus(order){
+    let stepCompleted = false;
+    statuses.forEach((status)=>{
+        let dataProp = status.dataset.status
+        if(stepCompleted){
+            status.classList.add('step-completed');
+        }
+        if(dataProp === order.status){
+            if(status.nextElementSibling){
+                status.nextElementSibling.classList.add('current')
+            }
+        }
+    })
+
+
+
+};
+updateStatus(order);
