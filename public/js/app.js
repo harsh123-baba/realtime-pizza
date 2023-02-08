@@ -70,17 +70,20 @@ function initAdmin() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _admin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin */ "./resources/js/admin.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
 var addtoCart = document.querySelectorAll(".add-to-cart");
 var cartCounter = document.querySelector("#cartCounter");
 function updateCart(pizza) {
-  axios__WEBPACK_IMPORTED_MODULE_2__["default"].post("/update-cart", pizza).then(function (res) {
+  axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("/update-cart", pizza).then(function (res) {
     console.log("oops", res.data.totalQty);
     cartCounter.innerText = res.data.totalQty;
     new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
@@ -112,7 +115,7 @@ function updateCartKeys(pizza_id, action, itemno) {
   var changed_value = document.getElementById(changedItem);
   var totalCartValue = document.querySelector("#totalCartValue");
   var changed_price = document.getElementById(changedPrice);
-  axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/update-cart-keys', {
+  axios__WEBPACK_IMPORTED_MODULE_3__["default"].post('/update-cart-keys', {
     pizza_id: pizza_id,
     action: action
   }).then(function (res) {
@@ -165,23 +168,34 @@ var statuses = document.querySelectorAll(".status_line");
 var hiddenInput = document.querySelector("#hiddenOrderInput");
 var order = hiddenInput ? hiddenInput.value : null;
 // console.log(order);
+
+// Change order status
+// let statuses = document.querySelectorAll('.status_line')
+// let hiddenInput = document.querySelector('#hiddenInput')
+// let order = hiddenInput ? hiddenInput.value : null
 order = JSON.parse(order);
-console.log(order);
+var time = document.createElement('small');
 function updateStatus(order) {
-  var stepCompleted = false;
+  statuses.forEach(function (status) {
+    status.classList.remove('step-completed');
+    status.classList.remove('current');
+  });
+  var stepCompleted = true;
   statuses.forEach(function (status) {
     var dataProp = status.dataset.status;
     if (stepCompleted) {
       status.classList.add('step-completed');
     }
     if (dataProp === order.status) {
+      stepCompleted = false;
+      time.innerText = moment__WEBPACK_IMPORTED_MODULE_2___default()(order.updatedAt).format('hh:mm A');
+      status.appendChild(time);
       if (status.nextElementSibling) {
         status.nextElementSibling.classList.add('current');
       }
     }
   });
 }
-;
 updateStatus(order);
 
 /***/ }),
