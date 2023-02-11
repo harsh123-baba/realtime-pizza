@@ -26,15 +26,25 @@ function orderController(){
             // console.log("new bro", newOrder.items[0]);
 
             newOrder.save().then(async result=>{
-                //here the logic is that how the order is going on
-                // console.log("res is",result.items[0]);
-                req.flash("success", "Order Placed Sucessfully");
-                //before that i need to remove all the elements from my cart bqs order is in plced state
-                let items = [];
-                // //now i want to delete thease items;
-                // console.log(items[0].item);
-                const updated_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id }, { items: items, totalQty: 0});
-                return res.redirect("/customer/orders");
+                // populate customer name for admin page start
+                Order.populate(result, {path:'customer_id'}, async (err, placedOrder)=>{
+                    //here the logic is that how the order is going on
+                    // console.log("res is",result.items[0]);
+                    // console.log("placed order", placedOrder)
+                    req.flash("success", "Order Placed Sucessfully");
+                    //before that i need to remove all the elements from my cart bqs order is in plced state
+                    let items = [];
+                    // //now i want to delete thease items;
+                    // console.log(items[0].item);
+                    const updated_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id }, { items: items, totalQty: 0});
+                    //event emit here
+                    const eventEmitter = req.app.get('eventEmitter')
+                    eventEmitter.emit('orderPlaced', placedOrder)
+                    
+                    return res.redirect("/customer/orders");
+                }) 
+                //end
+
             }).catch(err=>{
                 // console.log(err);
                 req.flash('error', "error occurred");

@@ -10,7 +10,7 @@ const flash = require("express-flash");
 const MongoDBStore = require('connect-mongo')(session);
 const passport = require('passport');
 const Cart = require("./app/models/cart")
-
+const EventEmitter = require('events');
 
 // Database connection
 mongoose.connect('mongodb://localhost:27017/Pizza', function(error){
@@ -32,6 +32,10 @@ let mongoStore = new MongoDBStore({
 })
 
 
+//event emitter
+const eventEmitter = new EventEmitter();
+app.set('eventEmitter', eventEmitter);
+
 // session configuration
 app.use(session({
     secret : process.env.COOKIE_SECRET,
@@ -50,7 +54,8 @@ app.use(express.json());
 // passport 
 app.use(passport.initialize());
 app.use(passport.session());
-const passportInit = require('./app/config/passport')
+const passportInit = require('./app/config/passport');
+// const { EventEmitter } = require("stream");
 passportInit(passport);
 
 //end of passpost
@@ -85,7 +90,35 @@ require("./routes/web")(app);
 
 const  PORT = process.env.PORT || 5000;
 
-app.listen(PORT, function(){
+const server = app.listen(PORT, function(){
     console.log("Connecting... on ", PORT)
 })  
 
+//socket 
+const io = require('socket.io')(server);
+//jese hi connection hojata hai then we need to give one call back
+//jese hi client connect ho jata hai use hme private room k andr join kreana hai 
+// hr ek order k liye ek private room hogi
+// order room k andr change aate hi hm event emit krne wala hai
+//connection will give us socket
+io.on('connection', (socket)=>{
+    //jo bh clien t connect kr rha use join krwana hai
+    //in this private room of particular order
+    //name unique hona chaiye kyoki ek order ka ek room baki ko nh btana bs isko btana hai
+    //and need to identify which order which room
+    // in socket.on ('join') join is the message that is comming from client side 
+    socket.on('join', (orderId)=>{
+        //here below join is socket method
+        socket.join(orderId);
+    })
+
+})
+
+eventEmitter.on('orderUpdated', (data)=>{
+    io.to(`order_${data.id}`).emit('orderUpdated', data)
+})
+
+
+eventEmitter.on('orderPlaced', (result)=>{
+    io.to('adminRoom').emit('orderPlaced', result)
+})

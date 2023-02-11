@@ -94,7 +94,6 @@ if(alrtmsg){
     }, 5000)
 }
 
-initAdmin();
 
 //update status
 let statuses = document.querySelectorAll(".status_line")
@@ -132,3 +131,39 @@ function updateStatus(order) {
 
 }
 updateStatus(order);
+
+//socket client side
+
+let socket = io();
+//join
+//jese hi hm order page pr aayege server ko msg emit krna hai ki we are on order page
+//take this order id and make a room for particular id
+// instead of join you can say anything
+initAdmin(socket);
+
+if(order){
+    socket.emit('join', `order_${order._id}`)
+}
+
+//for auto update of admin page
+let adminAreaPath = window.location.pathname
+console.log(adminAreaPath);
+if(adminAreaPath.includes('admin')){
+    socket.emit('join', 'adminRoom');
+}
+
+// socket will send a messafe of name 'join' and here inside that
+// order_kjndcjksnckjsdcn
+
+socket.on('orderUpdated', (data)=>{
+    const updatedOrder = { ...order }
+    updatedOrder.updatedAt = moment().format
+    updatedOrder.status = data.status
+    // console.log("bc", updatedOrder);
+    updateStatus(updatedOrder);
+    new Noty({
+        type:'success',
+        timeout:1000,
+        text:"order Updated"
+    }).show();
+})

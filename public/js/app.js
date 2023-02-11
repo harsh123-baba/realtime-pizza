@@ -20,7 +20,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function initAdmin() {
+function initAdmin(socket) {
   var orderTableBody = document.querySelector('#orderTableBody');
   var orders = [];
   var markup;
@@ -38,7 +38,7 @@ function initAdmin() {
   function renderItems(items) {
     var parsedItems = Object.values(items);
     return parsedItems.map(function (menuItem) {
-      return "\n                <p>".concat(menuItem.item.name, " - ").concat(menuItem.itemQty, " pcs </p>\n            ");
+      return "\n                <p>".concat(menuItem.item.name, " - ").concat(menuItem.qty, " pcs </p>\n            ");
     }).join('');
   }
   function generateMarkup(orders) {
@@ -47,17 +47,17 @@ function initAdmin() {
     }).join('');
   }
   // Socket
-  // socket.on('orderPlaced', (order) => {
-  //     new Noty({
-  //         type: 'success',
-  //         timeout: 1000,
-  //         text: 'New order!',
-  //         progressBar: false,
-  //     }).show();
-  //     orders.unshift(order)
-  //     orderTableBody.innerHTML = ''
-  //     orderTableBody.innerHTML = generateMarkup(orders)
-  // })
+  socket.on('orderPlaced', function (order) {
+    new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+      type: 'success',
+      timeout: 1000,
+      text: 'New order!',
+      progressBar: false
+    }).show();
+    orders.unshift(order);
+    orderTableBody.innerHTML = '';
+    orderTableBody.innerHTML = generateMarkup(orders);
+  });
 }
 
 /***/ }),
@@ -76,6 +76,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin */ "./resources/js/admin.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -161,7 +164,6 @@ if (alrtmsg) {
     alrtmsg.remove();
   }, 5000);
 }
-(0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)();
 
 //update status
 var statuses = document.querySelectorAll(".status_line");
@@ -197,6 +199,41 @@ function updateStatus(order) {
   });
 }
 updateStatus(order);
+
+//socket client side
+
+var socket = io();
+//join
+//jese hi hm order page pr aayege server ko msg emit krna hai ki we are on order page
+//take this order id and make a room for particular id
+// instead of join you can say anything
+(0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(socket);
+if (order) {
+  socket.emit('join', "order_".concat(order._id));
+}
+
+//for auto update of admin page
+var adminAreaPath = window.location.pathname;
+console.log(adminAreaPath);
+if (adminAreaPath.includes('admin')) {
+  socket.emit('join', 'adminRoom');
+}
+
+// socket will send a messafe of name 'join' and here inside that
+// order_kjndcjksnckjsdcn
+
+socket.on('orderUpdated', function (data) {
+  var updatedOrder = _objectSpread({}, order);
+  updatedOrder.updatedAt = moment__WEBPACK_IMPORTED_MODULE_2___default()().format;
+  updatedOrder.status = data.status;
+  // console.log("bc", updatedOrder);
+  updateStatus(updatedOrder);
+  new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
+    type: 'success',
+    timeout: 1000,
+    text: "order Updated"
+  }).show();
+});
 
 /***/ }),
 
