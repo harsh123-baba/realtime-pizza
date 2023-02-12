@@ -26,7 +26,7 @@ function initRouter(app){
     app.get("/cart", cartController().cart)
     app.post("/update-cart", cartController().updateCart)
     app.post("/update-cart-keys",cartController().updateCartKeys)
-
+    app.delete('/delete_item/:id', authMiddleware, cartController().deleteItem)
     // Cutomer Routes
     //Order
     app.post("/orders", authMiddleware ,orderController().store)

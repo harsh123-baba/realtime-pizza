@@ -1,8 +1,13 @@
 let debug = true;
 const Cart = require("../../../models/cart");
 const Menu = require('../../../models/menu');
+
+
+
 function cartController(){
     return {
+
+        
         async cart(req, res){
             
             let user_cart = await Cart.findOne({ 'user_id': req.user._id });
@@ -166,6 +171,44 @@ function cartController(){
                 current_price:current_price, 
                 changed_price:changed_price 
             })
+
+        },
+        async deleteItem(req, res){
+            // console.log(req.params)
+            // console.log("delete item called");
+            const usercart = await Cart.findOne({ 'user_id': req.user._id }).populate('items.item')
+            // console.log(usercart.items[0].item)
+            let user_items = usercart.items;
+            let totalQty = usercart.totalQty
+            let changed_price = null;
+            // for(var i = 0; i<user_items.length; i++){
+            //     let changed_price = totalCartValue(req);
+            // }
+            for(var i = 0;i<user_items.length; i++){
+                changed_price += (user_items[i].item.price * user_items[i].itemQty)
+                // console.log(changed_price)
+            }
+            for(var i = 0; i<user_items.length; i++){
+            // console.log("sdnsl",user_items[i].item._id, " ", req.params)
+                if(user_items[i].item._id == req.params.id){
+                    //splice this element;
+                    totalQty -= user_items[i].itemQty;
+                    changed_price -= (user_items[i].itemQty*user_items[i].item.price);
+                    user_items.splice(i, 1)
+                    // console.log(user_items)
+                    break;
+                }
+            }
+            let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
+            { items: user_items, totalQty: totalQty }
+            );
+            return res.json({ usercart:usercart,
+                totalQty: totalQty, 
+                // changed_value:changed_value, 
+                // current_price:current_price, 
+                changed_price:changed_price 
+            })
+
 
         }
 

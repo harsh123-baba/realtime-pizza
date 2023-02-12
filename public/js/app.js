@@ -116,7 +116,6 @@ function updateCartKeys(pizza_id, action, itemno) {
   var changedItem = "changed_value_" + itemno;
   var changedPrice = "changed_price_" + itemno;
   var changed_value = document.getElementById(changedItem);
-  var totalCartValue = document.querySelector("#totalCartValue");
   var changed_price = document.getElementById(changedPrice);
   axios__WEBPACK_IMPORTED_MODULE_3__["default"].post('/update-cart-keys', {
     pizza_id: pizza_id,
@@ -154,6 +153,27 @@ reduceKey.forEach(function (btn) {
     var pizza = JSON.parse(btn.dataset.pizza);
     // console.log(pizza);
     updateCartKeys(pizza, "reduce", btn.dataset.itemno);
+  });
+});
+
+//delete operation call here
+function deleteItem(pizza) {
+  console.log(pizza);
+  axios__WEBPACK_IMPORTED_MODULE_3__["default"]["delete"]("/delete_item/".concat(pizza), pizza).then(function (res) {
+    totalCartValue.innerText = res.data.changed_price;
+    new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
+      type: 'error',
+      timeout: 1000,
+      text: "Item Removed",
+      progressBar: false
+    }).show();
+  });
+}
+var deletebutton = document.querySelectorAll(".delete-item");
+deletebutton.forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    var pizza = JSON.parse(btn.dataset.pizza);
+    deleteItem(pizza);
   });
 });
 

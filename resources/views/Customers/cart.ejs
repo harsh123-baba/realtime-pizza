@@ -25,7 +25,12 @@
                         <img class = "chng-arrow"src = "/img/minus.png">
                     </button>
                 </div>
-                <span class="font-bold text-lg"  id = "changed_price_<%= i %>"><%= items[i].pizza_qty*items[i].pizza_price %></span>
+
+                <div class=" flex flex-col my-auto items-center">
+                    <button data-pizza="<%= JSON.stringify(items[i].pizza_id) %>" data-itemNo="<%= JSON.stringify(i) %>" class="delete-item"><span><img class = "w-5 pb-5"src = "/img/delete.png"></span></button>
+                    <span class="font-bold text-lg"  id = "changed_price_<%= i %>"><%= items[i].pizza_qty*items[i].pizza_price %></span>
+                </div>
+                <!-- <span class="font-bold text-lg" id = "delete_item"></span> -->
             </div>
         <% } %>
         </div>

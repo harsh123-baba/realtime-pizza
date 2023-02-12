@@ -7,13 +7,16 @@ body{
     color: $dark;   
 }
 
-nav li:last-child a img{
-    max-width: 40px;
+nav  .cartIcon{
+    max-width: 50px;
     background :$primary;
+    border-radius: 25%;
     &:hover {
         background: $primary-hover;
     }
 }
+
+
 nav li a{
     transition: $smooth;
     &:hover{
@@ -220,4 +223,5 @@ section.status {
     font-size: 14px;
     margin-top: 8px;
 }
+
 

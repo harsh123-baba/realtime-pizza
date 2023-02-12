@@ -245,11 +245,12 @@ body {
   color: #232323;
 }
 
-nav li:last-child a img {
-  max-width: 40px;
+nav .cartIcon {
+  max-width: 50px;
   background: #FE5F1E;
+  border-radius: 25%;
 }
-nav li:last-child a img:hover {
+nav .cartIcon:hover {
   background: #b23301;
 }
 

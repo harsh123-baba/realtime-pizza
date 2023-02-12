@@ -38,7 +38,6 @@ function updateCartKeys(pizza_id, action, itemno){
     let changedItem = "changed_value_" + itemno
     let changedPrice = "changed_price_"+ itemno;
     let changed_value = document.getElementById(changedItem)
-    let totalCartValue = document.querySelector("#totalCartValue");
     let changed_price = document.getElementById(changedPrice);
 
     axios.post('/update-cart-keys', {pizza_id, action})
@@ -78,6 +77,30 @@ reduceKey.forEach((btn)=>{
         let pizza = JSON.parse(btn.dataset.pizza);
         // console.log(pizza);
         updateCartKeys(pizza, "reduce",btn.dataset.itemno);
+    })
+})
+
+//delete operation call here
+function deleteItem(pizza){
+    
+    console.log(pizza)
+    axios.delete(`/delete_item/${pizza}`, pizza).
+    then(res=>{
+        totalCartValue.innerText = res.data.changed_price;
+        new Noty({
+            type: 'error',
+            timeout: 1000,
+            text: "Item Removed",
+            progressBar: false
+        }).show();
+    })
+}
+
+const deletebutton = document.querySelectorAll(".delete-item")
+deletebutton.forEach((btn)=>{
+    btn.addEventListener('click', (e)=>{
+        let pizza = JSON.parse(btn.dataset.pizza);
+        deleteItem(pizza);
     })
 })
 
