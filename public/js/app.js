@@ -87,7 +87,7 @@ var addtoCart = document.querySelectorAll(".add-to-cart");
 var cartCounter = document.querySelector("#cartCounter");
 function updateCart(pizza) {
   axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("/update-cart", pizza).then(function (res) {
-    console.log("oops", res.data.totalQty);
+    // console.log("oops", res.data.totalQty);
     cartCounter.innerText = res.data.totalQty;
     new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
       type: 'success',
@@ -152,7 +152,7 @@ reduceKey.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
     // console.log(btn.dataset)
     var pizza = JSON.parse(btn.dataset.pizza);
-    // console.log(pizza)
+    // console.log(pizza);
     updateCartKeys(pizza, "reduce", btn.dataset.itemno);
   });
 });

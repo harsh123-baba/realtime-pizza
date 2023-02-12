@@ -76,7 +76,7 @@ reduceKey.forEach((btn)=>{
     btn.addEventListener('click', (e)=>{
         // console.log(btn.dataset)
         let pizza = JSON.parse(btn.dataset.pizza);
-        // console.log(pizza)
+        // console.log(pizza);
         updateCartKeys(pizza, "reduce",btn.dataset.itemno);
     })
 })

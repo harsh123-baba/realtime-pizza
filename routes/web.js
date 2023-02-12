@@ -25,7 +25,7 @@ function initRouter(app){
     //cart
     app.get("/cart", cartController().cart)
     app.post("/update-cart", cartController().updateCart)
-    app.post("/update-cart-keys", adminMiddleware,cartController().updateCartKeys)
+    app.post("/update-cart-keys",cartController().updateCartKeys)
 
     // Cutomer Routes
     //Order

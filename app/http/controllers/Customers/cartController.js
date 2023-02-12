@@ -49,7 +49,7 @@ function cartController(){
                 let user_cart = await Cart.findOne({'user_id' : req.user._id});
                 // console.log("bro", user_cart);
                 if (user_cart == null){
-                    req.session.cart.totalQty = user_cart.totalQty+1;
+                    // req.session.cart.totalQty = user_cart.totalQty+1;
                     let new_cart = await new Cart({
                         items : [{
                             item : req.body._id,
@@ -98,7 +98,7 @@ function cartController(){
                     return res.json({ totalQty: req.session.cart.totalQty})
                 }
                 else{
-                    totalQty : 0
+                    return res.json({ totalQty: req.session.cart.totalQty})
                 }
                 // return res.render('/Customers/cart', {user_cart : user_cart} )
             }
@@ -113,23 +113,26 @@ function cartController(){
             let changed_price = null;
             let current_price = 0;
             let totalQty = user_cart.totalQty;
-            for(var i = 0; i<user_cart.items.length; i++){
+            // to calculate price of whole cart
+            for(var i = 0;i<user_cart.items.length; i++){
                 current_price += (user_cart.items[i].item.price * user_cart.items[i].itemQty)
+            }
+            for(var i = 0; i<user_cart.items.length; i++){
+                // current_price += (user_cart.items[i].item.price * user_cart.items[i].itemQty)
                 if(user_cart.items[i].item.id == req.body.pizza_id){
-                    
-                    // only this is the code for add the prodcut ;
+                    // only this is the code for add the prodcut;
                     let user_item = user_cart.items;
                     changed_value = user_item[i].itemQty;
                     changed_price = user_item[i].item.price * user_item[i].itemQty;
                     if(req.body.action === "add"){
                         user_item[i].itemQty += 1;
                         changed_value = user_item[i].itemQty;
-                        totalQty += 1;      
+                        totalQty += 1;
                         current_price += user_cart.items[i].item.price
                         changed_price += user_cart.items[i].item.price;
-
                     }
                     else{
+                        // console.log("a", user_item[i].itemQty);
                         if(user_item[i].itemQty > 1){
                             user_item[i].itemQty -= 1;
                             changed_value = user_item[i].itemQty;
@@ -145,16 +148,7 @@ function cartController(){
                             user_item.splice(i, 1);
                             totalQty -= 1;
                         }
-                        else{
-                            changed_value = user_item[i].itemQty;
-                            console.log("nothing here to delete")
-                            // return res.json({ user_cart: user_cart, 
-                            //     totalQty: totalQty, 
-                            //     changed_value: changed_value, 
-                            //     current_price: current_price, 
-                            //     changed_price:changed_price 
-                            // })
-                        }
+                        // console.log(changed_price, " ", current_price);
                     }
                     // console.log("hello",changed_price);
                     
