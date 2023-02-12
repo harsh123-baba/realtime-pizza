@@ -7,7 +7,7 @@ let addtoCart = document.querySelectorAll(".add-to-cart")
 let cartCounter = document.querySelector("#cartCounter");
 function updateCart(pizza){
     axios.post("/update-cart", pizza).then(res=>{
-        console.log("oops", res.data.totalQty);
+        // console.log("oops", res.data.totalQty);
         cartCounter.innerText = res.data.totalQty
         new Noty({
             type:'success',
@@ -22,7 +22,6 @@ function updateCart(pizza){
             progressBar:false
         }).show();
     })
-    
 }
 
 addtoCart.forEach((btn)=>{
@@ -31,9 +30,6 @@ addtoCart.forEach((btn)=>{
         updateCart(pizza);        
     })
 })
-
-
-
 
 const addKey = document.querySelectorAll(".add-to-cart-keys")
 const reduceKey = document.querySelectorAll(".reduce-to-cart-keys");
@@ -68,7 +64,6 @@ function updateCartKeys(pizza_id, action, itemno){
         }   
     })
 }
-
 
 addKey.forEach((btn)=>{
     btn.addEventListener('click', (e)=>{

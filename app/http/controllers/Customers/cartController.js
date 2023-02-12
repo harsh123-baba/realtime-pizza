@@ -33,6 +33,8 @@ function cartController(){
             res.render('Customers/cart', {items : items, totalCartValue:totalCartValue});
         },
 
+        //inside cart session only totalQty is available
+
         async updateCart(req, res) {
             // console.log("uodatjdnc")
             let totalQty = 0;
@@ -45,7 +47,9 @@ function cartController(){
             if (req.isAuthenticated()) {
                 // console.log(req.user)
                 let user_cart = await Cart.findOne({'user_id' : req.user._id});
+                // console.log("bro", user_cart);
                 if (user_cart == null){
+                    req.session.cart.totalQty = user_cart.totalQty+1;
                     let new_cart = await new Cart({
                         items : [{
                             item : req.body._id,
@@ -55,9 +59,8 @@ function cartController(){
                         user_id : req.user._id
                     })
                     req.session.cart.totalQty = 1;
-                    
                     new_cart.save().then((cart)=>{
-                    // console.log("Added");
+                        
                     }).catch(err=>{
                         // throw err
                         console.log(err);
@@ -67,14 +70,14 @@ function cartController(){
                     let prevAvailable = false;
                     for(var i = 0;i<user_cart.items.length; i++){
                         if (user_cart.items[i].item == req.body._id){
-                            // console.log("sldnvds");
-                            let old_item_list = user_cart.items;
                             let item = user_cart.items;
                             item[i].itemQty += 1;
                             totalQty += 1;
                             let update_cart = await Cart.findOneAndUpdate({ 'user_id': req.user._id },
                                 { items: item, totalQty: user_cart.totalQty + 1 }
                             );
+                            req.session.cart.totalQty = totalQty;
+
                             // req.session.cart.totalQty = user_cart.totalQty + 1;
                             prevAvailable = true;                            
                         }
@@ -88,13 +91,11 @@ function cartController(){
                             { items: old_item_list, totalQty: user_cart.totalQty+1 }
                         );   
                         req.session.cart.totalQty = user_cart.totalQty+1;
-
                     }
                 }  
-                // console.log("brijs", req.sessiontotalQty)
+                
                 if(user_cart){
-
-                    return res.json({ totalQty: user_cart.totalQty})
+                    return res.json({ totalQty: req.session.cart.totalQty})
                 }
                 else{
                     totalQty : 0
@@ -108,13 +109,11 @@ function cartController(){
 
         async updateCartKeys(req, res){
             const user_cart = await Cart.findOne({ 'user_id': req.user._id }).populate('items.item')
-            console.log(user_cart);
             let changed_value = null;
             let changed_price = null;
             let current_price = 0;
             let totalQty = user_cart.totalQty;
             for(var i = 0; i<user_cart.items.length; i++){
-                // console.log(user_cart.items[i].item.itemQty);
                 current_price += (user_cart.items[i].item.price * user_cart.items[i].itemQty)
                 if(user_cart.items[i].item.id == req.body.pizza_id){
                     
@@ -128,7 +127,6 @@ function cartController(){
                         totalQty += 1;      
                         current_price += user_cart.items[i].item.price
                         changed_price += user_cart.items[i].item.price;
-                        // console.log("add",changed_price)               
 
                     }
                     else{
@@ -138,7 +136,6 @@ function cartController(){
                             totalQty -= 1;
                             current_price -= user_cart.items[i].item.price;
                             changed_price -= user_cart.items[i].item.price;  
-                            // console.log("minus",changed_price);
                         }
                         else if(user_item[i].itemQty === 1){
                             current_price -= user_cart.items[i].item.price
@@ -178,35 +175,7 @@ function cartController(){
 
         }
 
-        // updateCart(req, res){
-        // //for the first time when user have nothing in cart
-        //     if(!req.session.cart){
-        //         req.session.cart = {
-        //             items:{},
-        //             totalQty: 0,
-        //             totalPrice : 0
-        //         }
-        //     }
-        //     let cart = req.session.cart;
-        //     console.log(req.body);
-        //     // check if item is not exist in cart;
-        //     if(!cart.items[req.body._id]){
-        //         cart.items[req.body._id] = {
-        //             item : req.body,
-        //             qty : 1 
-        //         }
-        //     }
-        //     else{
-        //         cart.items[req.body._id]+=1;
-        //         cart.totalQty += 1;
-        //         cart.totalPrice += req.body.price;
-        //     }
-        //     return res.json({totalQty:req.session.cart.totalQty})
-        // }
 
-        // async updateCart(req, res){
-        //     let item = req.body;
-        // }
         
     }
 }
