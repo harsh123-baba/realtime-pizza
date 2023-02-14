@@ -22,7 +22,7 @@ const oderSchema = new Schema ({
     phone : {type:Number, reuqired:true},
     address : {type : String, required:true},
     payment_method : {type:String, default:"COD"},
-    status : {type:String, default:"order_plcaed"}
+    status : {type:String, default:"order_placed"}
 }, {timestamps:true});
 
 

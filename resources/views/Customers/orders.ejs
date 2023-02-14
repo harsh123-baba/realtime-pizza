@@ -10,11 +10,13 @@
             <thead>
                 <tr>
                     <th class="px-4 py-2 text-left">Orders</th>
+                    <th class="px-4 py-2 text-left">Phone no</th>
                     <th class="px-4 py-2 text-left">Address</th>
                     <th class="px-4 py-2 text-left">Time</th>
                 </tr>
             </thead>
             <tbody>
+                
                 <% if (orders.length) {%>
                 <% orders.forEach((order)=>{ %>
                 <tr>
@@ -23,6 +25,10 @@
                             <%= order._id %> 
                         </a>
                     </td>
+                    <td class="border px-4 py-2">
+                        <%= order.phone %>
+                    </td>
+                    
                     <td class="border px-4 py-2">
                         <%= order.address %>
                     </td>

@@ -83,7 +83,6 @@ reduceKey.forEach((btn)=>{
 //delete operation call here
 function deleteItem(pizza){
     
-    console.log(pizza)
     axios.delete(`/delete_item/${pizza}`, pizza).
     then(res=>{
         totalCartValue.innerText = res.data.changed_price;
@@ -137,6 +136,8 @@ function updateStatus(order) {
        if(stepCompleted) {
             status.classList.add('step-completed')
        }
+       console.log(dataProp)
+       console.log(order.status)
        if(dataProp === order.status) {
             stepCompleted = false
             time.innerText = moment(order.updatedAt).format('hh:mm A')
@@ -157,7 +158,6 @@ let socket = io();
 //jese hi hm order page pr aayege server ko msg emit krna hai ki we are on order page
 //take this order id and make a room for particular id
 // instead of join you can say anything
-initAdmin(socket);
 
 if(order){
     socket.emit('join', `order_${order._id}`)
@@ -165,8 +165,9 @@ if(order){
 
 //for auto update of admin page
 let adminAreaPath = window.location.pathname
-console.log(adminAreaPath);
 if(adminAreaPath.includes('admin')){
+    initAdmin(socket);
+
     socket.emit('join', 'adminRoom');
 }
 

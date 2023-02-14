@@ -158,7 +158,6 @@ reduceKey.forEach(function (btn) {
 
 //delete operation call here
 function deleteItem(pizza) {
-  console.log(pizza);
   axios__WEBPACK_IMPORTED_MODULE_3__["default"]["delete"]("/delete_item/".concat(pizza), pizza).then(function (res) {
     totalCartValue.innerText = res.data.changed_price;
     new (noty__WEBPACK_IMPORTED_MODULE_0___default())({
@@ -208,6 +207,8 @@ function updateStatus(order) {
     if (stepCompleted) {
       status.classList.add('step-completed');
     }
+    console.log(dataProp);
+    console.log(order.status);
     if (dataProp === order.status) {
       stepCompleted = false;
       time.innerText = moment__WEBPACK_IMPORTED_MODULE_2___default()(order.updatedAt).format('hh:mm A');
@@ -227,15 +228,15 @@ var socket = io();
 //jese hi hm order page pr aayege server ko msg emit krna hai ki we are on order page
 //take this order id and make a room for particular id
 // instead of join you can say anything
-(0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(socket);
+
 if (order) {
   socket.emit('join', "order_".concat(order._id));
 }
 
 //for auto update of admin page
 var adminAreaPath = window.location.pathname;
-console.log(adminAreaPath);
 if (adminAreaPath.includes('admin')) {
+  (0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(socket);
   socket.emit('join', 'adminRoom');
 }
 
