@@ -5,6 +5,14 @@ import moment from 'moment';
 
 let addtoCart = document.querySelectorAll(".add-to-cart")
 let cartCounter = document.querySelector("#cartCounter");
+
+// function renderCart(){
+//     axios.get("/cart").then(res=>{
+//         console.log(res);
+
+//     })
+// }
+
 function updateCart(pizza){
     axios.post("/update-cart", pizza).then(res=>{
         // console.log("oops", res.data.totalQty);

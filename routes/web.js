@@ -22,11 +22,13 @@ function initRouter(app){
     app.post("/register", authController().postRegister)
     app.post("/login", authController().postLogin)
     app.post('/logout', authController().logout)
+
     //cart
     app.get("/cart", cartController().cart)
     app.post("/update-cart", cartController().updateCart)
     app.post("/update-cart-keys",cartController().updateCartKeys)
     app.delete('/delete_item/:id', authMiddleware, cartController().deleteItem)
+    
     // Cutomer Routes
     //Order
     app.post("/orders", authMiddleware ,orderController().store)
@@ -36,8 +38,8 @@ function initRouter(app){
 
     //ADMIN routes
     //orders
-    app.get("/admin/orders", adminOrderContoller().index);
-    app.post("/admin/order/status", statusController().update);
+    app.get("/admin/orders", adminMiddleware,adminOrderContoller().index);
+    app.post("/admin/order/status",adminMiddleware, statusController().update);
      
 
 
