@@ -15,6 +15,7 @@ const EventEmitter = require('events');
 // Database connection
 mongoose.connect(process.env.MONGO_URL, function(error){
     if(error){
+        console.log(error);
         console.log("error found");
     }
     else{
