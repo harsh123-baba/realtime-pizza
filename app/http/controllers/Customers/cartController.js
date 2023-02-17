@@ -5,9 +5,7 @@ const Menu = require('../../../models/menu');
 
 
 function cartController(){
-    return {
-
-        
+    return {      
         async cart(req, res){
             
             let user_cart = await Cart.findOne({ 'user_id': req.user._id });
@@ -35,6 +33,7 @@ function cartController(){
                 }
             }
             // console.log("HELOO",user_cart.totalQty);
+            res.json({items:items, totalCartValue:totalCartValue});
             res.render('Customers/cart', {items : items, totalCartValue:totalCartValue});
         },
 
