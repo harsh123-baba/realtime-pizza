@@ -33,7 +33,7 @@ function cartController(){
                 }
             }
             // console.log("HELOO",user_cart.totalQty);
-            res.json({items:items, totalCartValue:totalCartValue});
+            // res.json({items:items, totalCartValue:totalCartValue});
             res.render('Customers/cart', {items : items, totalCartValue:totalCartValue});
         },
 
