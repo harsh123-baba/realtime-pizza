@@ -13,7 +13,7 @@ const Cart = require("./app/models/cart")
 const EventEmitter = require('events');
 
 // Database connection
-mongoose.connect('mongodb://localhost:27017/Pizza', function(error){
+mongoose.connect(process.env.MONGO_URL, function(error){
     if(error){
         console.log("error found");
     }
@@ -27,7 +27,7 @@ let mongoStore = new MongoDBStore({
     host: '127.0.0.1',
     port: '27017',
     db: 'session',
-    url: process.env.MONGO_url
+    url: process.env.MONGO_URL
    
 })
 
@@ -86,7 +86,9 @@ app.use(async (req, res, next) => {
     next();
 })
 require("./routes/web")(app);
-
+app.use((req, res)=>{
+    res.status(404).send('<h1>Page not found</h1>')
+})
 
 const  PORT = process.env.PORT || 5000;
 
